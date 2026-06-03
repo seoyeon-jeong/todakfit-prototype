@@ -54,6 +54,7 @@ ${version === 'month' ? '- 지금 유산소를 넘어 근력 운동을 시작하
       const reply = await window.claude.complete(prompt);
       setHistory((h) => [...h, { role: 'bot', text: (reply || '').trim() || '응, 듣고 있어요. 조금만 더 얘기해줄래요?' }]);
     } catch (e) {
+      console.error('[토닥이 API 에러]', e);
       setHistory((h) => [...h, { role: 'bot', text: '앗, 잠시 연결이 흔들렸어요. 그래도 저는 항상 ' + name + '님 편이에요! 다시 한 번 말해줄래요? 🌷' }]);
     } finally {
       setBusy(false);
