@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>토닥핏 — 헬린이 응원 앱</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@400;500;600;700;800;900&family=Jua&family=Gaegu:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    height: 100%;
+    font-family: 'Gothic A1', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 24px;
+    background:
+      radial-gradient(1200px 700px at 20% 0%, #FBE8EE 0%, transparent 55%),
+      radial-gradient(1000px 800px at 100% 100%, #E7EFF7 0%, transparent 55%),
+      #EFE9F0;
+  }
+  #root { display: flex; align-items: center; justify-content: center; }
+
+  .tf-scroll { scrollbar-width: none; -ms-overflow-style: none; }
+  .tf-scroll::-webkit-scrollbar { width: 0; height: 0; display: none; }
+
+  .jua { font-family: var(--jua-family, 'Jua'), 'Gothic A1', sans-serif; font-weight: 400; }
+  .hand { font-family: 'Gaegu', 'Gothic A1', cursive; }
+
+  @keyframes tf-pop { 0% { transform: scale(.7); } 60% { transform: scale(1.05); } 100% { transform: scale(1); } }
+  @keyframes tf-rise { 0% { transform: translateY(14px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
+  @keyframes tf-float { 0%,100% { transform: translateY(0) rotate(-1deg); } 50% { transform: translateY(-7px) rotate(2deg); } }
+  @keyframes tf-bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+  @keyframes tf-blink { 0%,92%,100% { transform: scaleY(1); } 96% { transform: scaleY(0.1); } }
+  @keyframes tf-fill { from { width: 0; } }
+  @keyframes tf-dots { 0%,80%,100% { opacity: .3; transform: translateY(0);} 40% { opacity: 1; transform: translateY(-3px);} }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .tf-rise { animation: tf-rise .5s cubic-bezier(.2,.8,.2,1); }
+    .tf-pop  { animation: tf-pop .45s cubic-bezier(.2,1.2,.3,1); }
+  }
+
+  button { font-family: inherit; cursor: pointer; border: none; background: none; }
+  input, textarea { font-family: inherit; }
+
+  .api-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.55);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 9999; padding: 24px;
+  }
+  .api-modal {
+    background: #fff; border-radius: 24px; padding: 28px 24px;
+    max-width: 360px; width: 100%;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.22);
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script>
+(function() {
+  const STORAGE_KEY = 'todakfit_apikey';
+  window.claude = {
+    complete: async function(prompt) {
+      const key = localStorage.getItem(STORAGE_KEY);
+      if (!key) {
+        return '안녕하세요! AI 채팅을 사용하려면 ⚙️ Tweaks 패널에서 Claude API 키를 입력해주세요 🌷';
+      }
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': key,
+          'anthropic-version': '2023-06-01',
+          'anthropic-dangerous-direct-browser-access': 'true',
+        },
+        body: JSON.stringify({
+          model: 'claude-haiku-4-5-20251001',
+          max_tokens: 300,
+          messages: [{ role: 'user', content: prompt }],
+        }),
+      });
+      if (!res.ok) throw new Error('API error ' + res.status);
+      const data = await res.json();
+      return data.content?.[0]?.text || '';
+    },
+    getKey: () => localStorage.getItem(STORAGE_KEY),
+    setKey: (k) => { if (k) localStorage.setItem(STORAGE_KEY, k); else localStorage.removeItem(STORAGE_KEY); },
+  };
+})();
+</script>
+
+<script type="text/babel" src="frames/ios-frame.jsx"></script>
+<script type="text/babel" src="frames/tweaks-panel.jsx"></script>
+<script type="text/babel" src="src/mascot.jsx"></script>
+<script type="text/babel" src="src/data.jsx"></script>
+<script type="text/babel" src="src/ui.jsx"></script>
+<script type="text/babel" src="src/onboarding.jsx"></script>
+<script type="text/babel" src="src/home.jsx"></script>
+<script type="text/babel" src="src/detail.jsx"></script>
+<script type="text/babel" src="src/chat.jsx"></script>
+<script type="text/babel" src="src/app.jsx"></script>
+</body>
+</html>
