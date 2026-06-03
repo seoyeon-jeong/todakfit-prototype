@@ -68,32 +68,30 @@
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 
+<script src="config.js" onerror="void 0"></script>
+
 <script>
 (function() {
   const STORAGE_KEY = 'todakfit_apikey';
   window.claude = {
     complete: async function(prompt) {
-      const key = localStorage.getItem(STORAGE_KEY);
-      if (!key) {
-        return '안녕하세요! AI 채팅을 사용하려면 ⚙️ Tweaks 패널에서 Claude API 키를 입력해주세요 🌷';
+      const key = window.TODAKFIT_API_KEY || localStorage.getItem(STORAGE_KEY);
+      if (!key || key.startsWith('여기에')) {
+        return '안녕하세요! AI 채팅을 사용하려면 config.js에 API 키를 입력해주세요 🌷';
       }
-      const res = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': key,
-          'anthropic-version': '2023-06-01',
-          'anthropic-dangerous-direct-browser-access': 'true',
-        },
-        body: JSON.stringify({
-          model: 'claude-haiku-4-5-20251001',
-          max_tokens: 300,
-          messages: [{ role: 'user', content: prompt }],
-        }),
-      });
+      const res = await fetch(
+        'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + key,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+          }),
+        }
+      );
       if (!res.ok) throw new Error('API error ' + res.status);
       const data = await res.json();
-      return data.content?.[0]?.text || '';
+      return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
     },
     getKey: () => localStorage.getItem(STORAGE_KEY),
     setKey: (k) => { if (k) localStorage.setItem(STORAGE_KEY, k); else localStorage.removeItem(STORAGE_KEY); },
