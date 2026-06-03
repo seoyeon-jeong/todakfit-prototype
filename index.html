@@ -61,25 +61,19 @@
 <script src="config.js" onerror="void 0"></script>
 
 <script>
-if (!window.TODAKFIT_API_KEY) {
-  window.TODAKFIT_API_KEY = 'AIzaSyCU4MtI2DtvQr-lhhoNMJaEHplnvL5lZrI';
-}
-</script>
-
-<script>
 (function() {
   const STORAGE_KEY = 'todakfit_apikey';
   window.claude = {
     complete: async function(prompt) {
       const key = window.TODAKFIT_API_KEY || localStorage.getItem(STORAGE_KEY);
-      if (!key || key.startsWith('여기에')) {
-        return '안녕하세요! AI 채팅을 사용하려면 config.js에 API 키를 입력해주세요 🌷';
+      if (!key) {
+        return '안녕하세요! AI 채팅을 사용하려면 먼저 API 키를 입력해주세요 🌷';
       }
       const res = await fetch(
-        'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + key,
+        'https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent',
         {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', 'X-goog-api-key': key },
           body: JSON.stringify({
             contents: [{ parts: [{ text: prompt }] }],
           }),
