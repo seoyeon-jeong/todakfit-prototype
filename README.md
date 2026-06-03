@@ -16,7 +16,7 @@
 ## 기술 스택
 
 - React 18 (CDN), Babel Standalone — 빌드 툴 없이 브라우저에서 직접 실행
-- Google Gemini API (`gemini-2.0-flash`)
+- Google Gemini API (`gemini-1.5-flash`)
 - 순수 HTML / JSX / CSS-in-JS
 
 ## 시작하기
@@ -24,22 +24,11 @@
 ### 1. 저장소 클론
 
 ```bash
-git clone https://github.com/<your-username>/todakfit.git
-cd todakfit
+git clone https://github.com/seoyeon-jeong/todakfit-prototype.git
+cd todakfit-prototype
 ```
 
-### 2. API 키 설정
-
-`config.js` 파일을 프로젝트 루트에 생성하고 [Google AI Studio](https://aistudio.google.com/apikey)에서 발급받은 키를 입력하세요.
-
-```js
-// config.js
-window.TODAKFIT_API_KEY = 'AIzaSy...여기에_키_입력...';
-```
-
-> `config.js`는 `.gitignore`에 등록되어 있어 git에 업로드되지 않아요.
-
-### 3. 실행
+### 2. 실행
 
 별도 서버 없이 `index.html`을 브라우저에서 바로 열면 됩니다.
 
@@ -49,12 +38,23 @@ index.html 파일을 더블클릭하거나 브라우저로 드래그
 
 또는 VS Code의 Live Server 익스텐션을 사용하면 편리해요.
 
+> AI 채팅(토닥이)은 별도 설정 없이 바로 사용 가능해요.
+
+### 로컬 개발 시 API 키 교체
+
+기본 키 대신 본인 키를 사용하려면 프로젝트 루트에 `config.js`를 생성하세요. (`.gitignore`에 등록되어 있어 git에 올라가지 않아요.)
+
+```js
+// config.js — Google AI Studio (https://aistudio.google.com/apikey) 에서 발급
+window.TODAKFIT_API_KEY = 'AIzaSy...여기에_키_입력...';
+```
+
 ## 프로젝트 구조
 
 ```
-todakfit/
-├── index.html          # 앱 진입점, API 호출 로직
-├── config.js           # API 키 (gitignore, 직접 생성 필요)
+todakfit-prototype/
+├── index.html          # 앱 진입점, Gemini API 호출 로직
+├── config.js           # 로컬 개발용 API 키 (gitignore, 직접 생성 필요)
 ├── src/
 │   ├── app.jsx         # 라우팅, 전역 상태, Tweaks 패널
 │   ├── onboarding.jsx  # 온보딩 플로우
