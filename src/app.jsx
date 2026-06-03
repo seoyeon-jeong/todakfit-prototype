@@ -41,7 +41,7 @@ function ApiKeyModal({ onClose }) {
         />
         <div style={{ display:'flex', gap:10 }}>
           <button onClick={onClose} style={{ flex:1, padding:13, borderRadius:14, background:'#F2EAF1', fontSize:15, fontWeight:700, color:'#9A94A4' }}>취소</button>
-          <button onClick={save} style={{ flex:2, padding:13, borderRadius:14, background:'var(--accent)', fontSize:15, fontWeight:700, color:'#fff', boxShadow:'0 8px 18px var(--accent-shadow)' }}>저장</button>
+          <button onClick={save} style={{ flex:2, padding:13, borderRadius:14, background:'#E0496C', fontSize:15, fontWeight:700, color:'#fff', boxShadow:'0 8px 18px rgba(224,73,108,0.4)' }}>저장</button>
         </div>
       </div>
     </div>
