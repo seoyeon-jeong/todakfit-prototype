@@ -1,9 +1,8 @@
 // detail.jsx — exercise usage detail (steps + video links).
 
-function Detail({ exId, onBack, onOpenChat }) {
+function Detail({ exId, onBack, onOpenChat, done, onToggleDone }) {
   const ex = EXERCISES[exId];
   const t = TONES[ex.tone];
-  const [done, setDone] = React.useState(false);
   const ytUrl = (q) => `https://www.youtube.com/results?search_query=${encodeURIComponent(q)}`;
 
   return (
@@ -96,7 +95,7 @@ function Detail({ exId, onBack, onOpenChat }) {
 
         {/* complete button */}
         <div style={{ padding: '22px 22px 26px' }}>
-          <button onClick={() => setDone(!done)} style={{
+          <button onClick={onToggleDone} style={{
             width: '100%', padding: 16, borderRadius: 20,
             background: done ? '#DBF3EC' : 'var(--accent)',
             color: done ? '#1F9E86' : '#fff',

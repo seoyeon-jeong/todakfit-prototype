@@ -61,10 +61,13 @@ function App() {
   const [profile, setProfile] = React.useState(saved.profile || null);
   const [version, setVersion] = React.useState(saved.version || 'beginner');
   const [exId, setExId] = React.useState(saved.exId || null);
+  const [completed, setCompleted] = React.useState(saved.completed || {});
 
   React.useEffect(() => {
-    localStorage.setItem(STORE_KEY, JSON.stringify({ screen, tab, profile, version, exId }));
-  }, [screen, tab, profile, version, exId]);
+    localStorage.setItem(STORE_KEY, JSON.stringify({ screen, tab, profile, version, exId, completed }));
+  }, [screen, tab, profile, version, exId, completed]);
+
+  const toggleComplete = (id) => setCompleted((prev) => ({ ...prev, [id]: !prev[id] }));
 
   const accent = Array.isArray(t.accent) ? t.accent : ACCENTS.pink;
   const cssVars = {
@@ -86,7 +89,7 @@ function App() {
 
   const resetAll = () => {
     localStorage.removeItem(STORE_KEY);
-    setProfile(null); setScreen('onboarding'); setTab('home'); setVersion('beginner'); setExId(null);
+    setProfile(null); setScreen('onboarding'); setTab('home'); setVersion('beginner'); setExId(null); setCompleted({});
   };
 
   const openDetail = (id) => { setExId(id); setScreen('detail'); };
@@ -97,7 +100,7 @@ function App() {
   if (screen === 'onboarding' || !profile) {
     body = <Onboarding onComplete={completeOnboarding} />;
   } else if (screen === 'detail') {
-    body = <Detail exId={exId} onBack={() => setScreen('home')} onOpenChat={openChat} />;
+    body = <Detail exId={exId} onBack={() => setScreen('home')} onOpenChat={openChat} done={!!completed[exId]} onToggleDone={() => toggleComplete(exId)} />;
   } else if (screen === 'chat') {
     body = <Chat profile={profile} version={version} onBack={() => setScreen('home')} />;
   } else {
@@ -112,6 +115,7 @@ function App() {
               onToggleVersion={setVersion}
               onOpenDetail={openDetail}
               onOpenChat={openChat}
+              completed={completed}
             />
           )}
           {(tab === 'gear' || tab === 'log') && <ComingSoon tab={tab} />}

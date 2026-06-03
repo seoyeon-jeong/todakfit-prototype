@@ -1,6 +1,6 @@
 // home.jsx — main home screen. Two versions (beginner / month) by experience.
 
-function Home({ profile, version, onToggleVersion, onOpenDetail, onOpenChat }) {
+function Home({ profile, version, onToggleVersion, onOpenDetail, onOpenChat, completed = {} }) {
   const routine = ROUTINES[version];
   const cheer = CHEER[version];
   const name = profile.name || '회원';
@@ -42,7 +42,7 @@ function Home({ profile, version, onToggleVersion, onOpenDetail, onOpenChat }) {
       {/* ── routine list ── */}
       <div style={{ padding: '12px 18px 4px', display: 'flex', flexDirection: 'column', gap: 11 }}>
         {routine.list.map((id, i) => (
-          <RoutineRow key={id} index={i + 1} ex={EXERCISES[id]} onClick={() => onOpenDetail(id)} />
+          <RoutineRow key={id} index={i + 1} ex={EXERCISES[id]} done={!!completed[id]} onClick={() => onOpenDetail(id)} />
         ))}
       </div>
 
@@ -95,14 +95,16 @@ function VersionToggle({ version, onToggle }) {
 }
 
 // ── single routine row ──
-function RoutineRow({ index, ex, onClick }) {
+function RoutineRow({ index, ex, done, onClick }) {
   const t = TONES[ex.tone];
   return (
     <div onClick={onClick} style={{
       display: 'flex', alignItems: 'center', gap: 13,
-      background: '#fff', borderRadius: 20, padding: '12px 14px',
-      border: '1.5px solid #F4EEF4', boxShadow: '0 4px 12px rgba(80,60,90,0.04)',
+      background: done ? '#F6FDF9' : '#fff', borderRadius: 20, padding: '12px 14px',
+      border: done ? '1.5px solid #B8EDD8' : '1.5px solid #F4EEF4',
+      boxShadow: '0 4px 12px rgba(80,60,90,0.04)',
       cursor: 'pointer', transition: 'transform .12s ease, box-shadow .2s',
+      opacity: done ? 0.82 : 1,
     }}
     onMouseDown={(e) => e.currentTarget.style.transform = 'scale(.985)'}
     onMouseUp={(e) => e.currentTarget.style.transform = 'scale(1)'}
@@ -110,31 +112,32 @@ function RoutineRow({ index, ex, onClick }) {
     >
       <div style={{
         width: 50, height: 50, borderRadius: 15, flexShrink: 0,
-        background: t.bg, display: 'flex', alignItems: 'center', justifyContent: 'center',
+        background: done ? '#DBF3EC' : t.bg,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
         fontSize: 26, position: 'relative',
       }}>
-        {ex.emoji}
+        {done ? '✅' : ex.emoji}
         <span style={{
           position: 'absolute', top: -6, left: -6, width: 22, height: 22, borderRadius: 99,
-          background: 'var(--accent)', color: '#fff', fontSize: 12, fontWeight: 800,
+          background: done ? '#34C99A' : 'var(--accent)', color: '#fff', fontSize: 12, fontWeight: 800,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           border: '2px solid #fff',
-        }}>{index}</span>
+        }}>{done ? '✓' : index}</span>
       </div>
       <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ fontSize: 16.5, fontWeight: 800, color: 'var(--ink)' }}>{ex.name}</div>
+        <div style={{ fontSize: 16.5, fontWeight: 800, color: done ? '#2D9E7A' : 'var(--ink)', textDecoration: done ? 'line-through' : 'none' }}>{ex.name}</div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 3, whiteSpace: 'nowrap' }}>
-          <span style={{ fontSize: 11, fontWeight: 800, color: t.fg, background: t.bg, padding: '2px 8px', borderRadius: 99, flexShrink: 0 }}>{ex.tag}</span>
+          <span style={{ fontSize: 11, fontWeight: 800, color: done ? '#34C99A' : t.fg, background: done ? '#DBF3EC' : t.bg, padding: '2px 8px', borderRadius: 99, flexShrink: 0 }}>{done ? '완료' : ex.tag}</span>
           <span style={{ fontSize: 12.5, color: '#A89BAE' }}>{ex.sets}</span>
         </div>
       </div>
-      {/* 방법보기 */}
       <div style={{
         display: 'flex', alignItems: 'center', gap: 1, flexShrink: 0, whiteSpace: 'nowrap',
-        padding: '8px 11px', borderRadius: 13, background: 'var(--accent-bg)',
-        color: 'var(--accent-deep)', fontSize: 13, fontWeight: 800,
+        padding: '8px 11px', borderRadius: 13,
+        background: done ? '#DBF3EC' : 'var(--accent-bg)',
+        color: done ? '#1F9E86' : 'var(--accent-deep)', fontSize: 13, fontWeight: 800,
       }}>
-        방법보기 <Icon name="chevron" size={14} stroke={2.6} />
+        {done ? '완료 ✓' : <>{`방법보기`} <Icon name="chevron" size={14} stroke={2.6} /></>}
       </div>
     </div>
   );
