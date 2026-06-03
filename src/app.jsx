@@ -21,36 +21,9 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "bg": "#FFF7F4"
 }/*EDITMODE-END*/;
 
-function ApiKeyModal({ onClose }) {
-  const [key, setKey] = React.useState(window.claude.getKey() || '');
-  const save = () => { window.claude.setKey(key.trim()); onClose(); };
-  return (
-    <div className="api-overlay" onClick={onClose}>
-      <div className="api-modal" onClick={(e) => e.stopPropagation()}>
-        <div className="jua" style={{ fontSize: 20, color: '#3D3A42', marginBottom: 8 }}>Claude API 키 설정</div>
-        <div style={{ fontSize: 13.5, color: '#9A94A4', lineHeight: 1.6, marginBottom: 18 }}>
-          AI 채팅(토닥이)을 사용하려면 Anthropic API 키가 필요해요.<br />
-          키는 브라우저 로컬스토리지에만 저장돼요.
-        </div>
-        <input value={key} onChange={(e) => setKey(e.target.value)}
-          onKeyDown={(e) => { if (e.key === 'Enter') save(); }}
-          placeholder="sk-ant-..."
-          style={{ width: '100%', padding: '13px 16px', borderRadius: 14, border: '2px solid #F0E7F1', fontSize: 14, outline: 'none', marginBottom: 14, fontFamily: 'monospace' }}
-          onFocus={(e) => e.target.style.borderColor = 'var(--accent)'}
-          onBlur={(e) => e.target.style.borderColor = '#F0E7F1'}
-        />
-        <div style={{ display: 'flex', gap: 10 }}>
-          <button onClick={onClose} style={{ flex: 1, padding: '13px', borderRadius: 14, background: '#F2EAF1', fontSize: 15, fontWeight: 700, color: '#9A94A4' }}>취소</button>
-          <button onClick={save} style={{ flex: 2, padding: '13px', borderRadius: 14, background: 'var(--accent)', fontSize: 15, fontWeight: 700, color: '#fff', boxShadow: '0 8px 18px var(--accent-shadow)' }}>저장</button>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 function App() {
   const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
-  const [showApiModal, setShowApiModal] = React.useState(false);
 
   // persisted app state
   const load = () => { try { return JSON.parse(localStorage.getItem(STORE_KEY)) || {}; } catch { return {}; } };
@@ -167,11 +140,7 @@ function App() {
           options={['beginner', 'month']}
           onChange={(v) => { setVersion(v); setScreen('home'); setTab('home'); }} />
         <TweakButton label="온보딩 다시 보기" onClick={resetAll} />
-        <TweakSection label="AI 설정" />
-        <TweakButton label="Claude API 키 설정" onClick={() => setShowApiModal(true)} />
       </TweaksPanel>
-
-      {showApiModal && <ApiKeyModal onClose={() => setShowApiModal(false)} />}
     </>
   );
 }
