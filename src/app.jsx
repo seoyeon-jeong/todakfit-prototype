@@ -50,7 +50,7 @@ function ApiKeyModal({ onClose }) {
 
 function App() {
   const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
-  const [showApiModal, setShowApiModal] = React.useState(!window.TODAKFIT_API_KEY && !window.claude.getKey());
+  const [showApiModal, setShowApiModal] = React.useState(!window.claude.getKey());
 
   // persisted app state
   const load = () => { try { return JSON.parse(localStorage.getItem(STORE_KEY)) || {}; } catch { return {}; } };
