@@ -132,19 +132,8 @@ function Gear() {
           <div style={{
             height: 160, background: '#1A1A2E', position: 'relative',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
+            overflow: 'hidden',
           }}>
-            {/* corner brackets */}
-            {[['0%','0%','right','bottom'],['100%','0%','left','bottom'],['0%','100%','right','top'],['100%','100%','left','top']].map(([l,t,br,bb], i) => (
-              <div key={i} style={{
-                position: 'absolute', left: l, top: t,
-                width: 28, height: 28,
-                borderRight: br === 'right' ? 'none' : '3px solid var(--accent)',
-                borderLeft:  br === 'left'  ? 'none' : '3px solid var(--accent)',
-                borderBottom: bb === 'bottom' ? 'none' : '3px solid var(--accent)',
-                borderTop:    bb === 'top'    ? 'none' : '3px solid var(--accent)',
-                margin: 12,
-              }} />
-            ))}
 
             {scanning ? (
               <div style={{ textAlign: 'center', color: '#fff' }}>
