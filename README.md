@@ -14,7 +14,7 @@
   - 입문 루틴: 트레드밀 유산소 + 기구 2종 (~30분, 부담 없는 구성)
   - 한 달 차 루틴: 자유중량을 섞은 근력 업그레이드 루틴
 - **운동 상세** — 단계별 자세 설명, 주의사항, 세트·휴식 정보
-- **AI 채팅 (토닥이)** — Google Gemini 기반 AI 치어리더. 운동 자세, 식단, 동기부여 질문에 친절하게 답해줘요
+- **AI 채팅 (토닥이)** — Azure OpenAI 기반 AI 치어리더. 운동 자세, 식단, 동기부여 질문에 친절하게 답해줘요
 - **커뮤니티** — 비슷한 배경의 헬린이끼리 운동을 인증하고 응원하는 소규모 커뮤니티
   - 메인글 / 전체글 / 인기글 / 팔로우 탭
   - 추천 글·추천 유저, 팔로우, 좋아요, 글쓰기 기능
@@ -26,7 +26,7 @@
 ## 기술 스택
 
 - React 18 (CDN), Babel Standalone — 빌드 툴 없이 브라우저에서 직접 실행
-- Google Gemini API (`gemini-flash-latest`)
+- Azure OpenAI API (`gpt-4.1-mini`)
 - 순수 HTML / JSX / CSS-in-JS
 
 ## 시작하기
@@ -50,20 +50,20 @@ index.html 파일을 더블클릭하거나 브라우저로 드래그
 
 > AI 채팅(토닥이)은 별도 설정 없이 바로 사용 가능해요.
 
-### 로컬 개발 시 API 키 교체
+### 로컬 개발 시 API 키 설정
 
-기본 키 대신 본인 키를 사용하려면 프로젝트 루트에 `config.js`를 생성하세요. (`.gitignore`에 등록되어 있어 git에 올라가지 않아요.)
+로컬에서 AI 채팅을 사용하려면 프로젝트 루트에 `config.js`를 생성하세요. (`.gitignore`에 등록되어 있어 git에 올라가지 않아요.)
 
 ```js
-// config.js — Google AI Studio (https://aistudio.google.com/apikey) 에서 발급
-window.TODAKFIT_API_KEY = 'AIzaSy...여기에_키_입력...';
+// config.js — Azure Portal > todakfit-prototype > Keys and Endpoint 에서 발급
+window.TODAKFIT_API_KEY = '여기에_Azure_API_키_입력';
 ```
 
 ## 프로젝트 구조
 
 ```
 todakfit-prototype/
-├── index.html              # 앱 진입점, Gemini API 호출 로직
+├── index.html              # 앱 진입점, Azure OpenAI API 호출 로직
 ├── config.js               # 로컬 개발용 API 키 (gitignore, 직접 생성 필요)
 ├── src/
 │   ├── app.jsx             # 라우팅, 전역 상태, Tweaks 패널
