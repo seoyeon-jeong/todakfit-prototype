@@ -84,7 +84,7 @@ function App() {
     setProfile(p);
     setVersion(p.exp === 'beginner' ? 'beginner' : 'month');
     setTab('home');
-    setScreen('home');
+    setScreen('mascotIntro');
   };
 
   const resetAll = () => {
@@ -99,12 +99,14 @@ function App() {
   let body;
   if (screen === 'onboarding' || !profile) {
     body = <Onboarding onComplete={completeOnboarding} />;
+  } else if (screen === 'mascotIntro') {
+    body = <MascotIntro name={profile.name || '회원'} onContinue={() => setScreen('home')} />;
   } else if (screen === 'detail') {
     body = <Detail exId={exId} onBack={() => setScreen('home')} onOpenChat={openChat} done={!!completed[exId]} onToggleDone={() => toggleComplete(exId)} />;
   } else if (screen === 'chat') {
     body = <Chat profile={profile} version={version} onBack={() => setScreen('home')} />;
   } else {
-    // main tabbed area (home / gear / log)
+    // main tabbed area (home / gear / community / log)
     body = (
       <div style={{ height: '100%', display: 'flex', flexDirection: 'column', position: 'relative', background: 'var(--bg)' }}>
         <div style={{ flex: 1, minHeight: 0 }}>
@@ -118,7 +120,9 @@ function App() {
               completed={completed}
             />
           )}
-          {(tab === 'gear' || tab === 'log') && <ComingSoon tab={tab} />}
+          {tab === 'gear'      && <Gear />}
+          {tab === 'community' && <Community />}
+          {tab === 'log'       && <ComingSoon tab={tab} />}
         </div>
 
         {/* floating AI 치어리더 button (home only) */}

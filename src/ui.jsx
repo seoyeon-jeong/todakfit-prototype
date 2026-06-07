@@ -25,6 +25,10 @@ function Icon({ name, size = 24, color = 'currentColor', stroke = 2 }) {
     check: <path d="M5 12l5 5L20 6" {...p} />,
     clock: <><circle cx="12" cy="12" r="9" {...p} /><path d="M12 7v5l3 2" {...p} /></>,
     flame: <path d="M12 3c1 3-2 4-2 7a2 2 0 1 0 4 0c2 2 3 3 3 6a5 5 0 0 1-10 0c0-4 3-5 5-13z" {...p} />,
+    search: <><circle cx="11" cy="11" r="6.5" {...p} /><path d="M16.5 16.5L21 21" {...p} /></>,
+    camera: <><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" {...p} /><circle cx="12" cy="13" r="4" {...p} /></>,
+    bookmark: <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" {...p} />,
+    people: <><circle cx="9" cy="7" r="4" {...p} /><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2" {...p} /><path d="M16 3.13a4 4 0 0 1 0 7.75" {...p} /><path d="M21 21v-2a4 4 0 0 0-3-3.87" {...p} /></>,
   };
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" style={{ display: 'block' }}>
@@ -97,12 +101,13 @@ function SpeechBubble({ children, onClick, accentMsg }) {
 }
 window.SpeechBubble = SpeechBubble;
 
-// ── Bottom navigation (기구 | 홈 | 기록) ──
+// ── Bottom navigation (기구 | 홈 | 커뮤니티 | 기록) ──
 function BottomNav({ active, onNav }) {
   const items = [
-    { id: 'gear', label: '기구', icon: 'dumbbell' },
-    { id: 'home', label: '홈', icon: 'home' },
-    { id: 'log', label: '기록', icon: 'chart' },
+    { id: 'gear',      label: '기구',    icon: 'dumbbell' },
+    { id: 'home',      label: '홈',      icon: 'home'     },
+    { id: 'community', label: '커뮤니티', icon: 'people'   },
+    { id: 'log',       label: '기록',    icon: 'chart'    },
   ];
   return (
     <div style={{

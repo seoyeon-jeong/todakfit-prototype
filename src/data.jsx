@@ -2,6 +2,34 @@
 
 // ── Exercise database (beginner-friendly, machine-focused) ──
 const EXERCISES = {
+  treadmill: {
+    name: '트레드밀', en: 'Treadmill', target: '유산소 · 전신',
+    tag: '유산소', tone: 'butter', emoji: '🏃',
+    sets: '20분 걷기/조깅', rest: '속도는 편안하게',
+    summary: '걷기부터 가볍게 뛰기까지. 첫 날은 빠르게 걷는 것만으로도 충분해요. 심폐 기능을 키우는 가장 친숙한 워밍업이에요.',
+    steps: [
+      '속도 4~5km/h 걷기로 5분 워밍업해요.',
+      '이후 5~6km/h 빠르게 걷거나 가볍게 달려요.',
+      '숨이 많이 찰 땐 속도를 줄이고 걷기로 돌아와도 괜찮아요.',
+      '마지막 3분은 다시 천천히 걷으며 쿨다운해요.',
+    ],
+    tips: ['처음엔 뛰려 하지 말고, 숨이 약간 찰 정도로 빠르게 걷는 게 좋아요.', '20분이 힘들면 10분부터 시작해도 충분해요.'],
+    yt: '트레드밀 초보 사용법',
+  },
+  bike: {
+    name: '사이클', en: 'Stationary Bike', target: '유산소 · 하체',
+    tag: '유산소', tone: 'butter', emoji: '🚴',
+    sets: '15~20분', rest: '페달 속도 조절',
+    summary: '자전거 페달을 밟으며 하체와 심폐를 동시에 단련해요. 무릎에 부담이 적어 초보자에게 특히 좋아요.',
+    steps: [
+      '안장 높이를 맞춰요. 페달 아래에서 무릎이 살짝 굽혀지는 높이가 딱 좋아요.',
+      '저항 레벨은 가장 낮게 시작해요.',
+      '분당 60~70rpm 속도로 편안하게 페달을 밟아요.',
+      '10분 후 조금씩 속도나 저항을 올려볼 수 있어요.',
+    ],
+    tips: ['등은 곧게 펴고 손잡이를 너무 꽉 잡지 않아요.', '무릎이 안으로 모이지 않게 신경써요.'],
+    yt: '헬스장 사이클 초보 사용법',
+  },
   legpress: {
     name: '레그 프레스', en: 'Leg Press', target: '하체 · 허벅지/엉덩이',
     tag: '머신', tone: 'mint', emoji: '🦵',
@@ -121,9 +149,9 @@ const ROUTINES = {
   beginner: {
     version: 'beginner',
     day: 1,
-    title: '첫 만남 · 전신 머신 루틴',
-    duration: '약 35분',
-    list: ['legpress', 'latpulldown', 'chestpress', 'legcurl', 'seatedrow'],
+    title: '첫 만남 · 유산소 + 기구 2종',
+    duration: '약 30분',
+    list: ['treadmill', 'legpress', 'latpulldown'],
   },
   month: {
     version: 'month',
