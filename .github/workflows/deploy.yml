@@ -18,8 +18,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Create config.js
-        run: echo "window.TODAKFIT_API_KEY = '${{ secrets.AZURE_API_KEY }}';" > config.js
+      - name: Inject API key into index.html
+        env:
+          AZURE_KEY: ${{ secrets.AZURE_API_KEY }}
+        run: sed -i "s|window\.TODAKFIT_API_KEY|'${AZURE_KEY}'|g" index.html
 
       - uses: actions/upload-pages-artifact@v3
         with:
